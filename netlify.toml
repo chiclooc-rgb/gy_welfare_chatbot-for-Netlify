@@ -10,7 +10,7 @@
 
 [build.environment]
   # Python 버전 명시적 설정
-  PYTHON_VERSION = "3.10.13"
+  PYTHON_VERSION = "3.10"
   
   # 환경 변수들
   NODE_ENV = "production"
