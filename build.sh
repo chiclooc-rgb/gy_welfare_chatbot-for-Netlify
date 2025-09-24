@@ -147,3 +147,4 @@ fi
 echo "✅ 빌드 완료!"
 echo "📍 생성된 파일들:"
 find . -name "*.py" -o -name "*.toml" -o -name "*.txt" -o -name "*.html" | head -20
+

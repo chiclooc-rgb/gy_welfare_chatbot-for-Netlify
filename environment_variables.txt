@@ -12,3 +12,4 @@ NETLIFY=true
 
 # Python 경로 설정
 PYTHONPATH=/opt/buildhome/python3.10/lib/python3.10/site-packages:/var/runtime
+
