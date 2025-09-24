@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>복지 챗봇 테스트 (프론트엔드만)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: white;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .status {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .chat-container {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+        
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .message.user .message-avatar {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .message.bot .message-avatar {
+            background: #10b981;
+            color: white;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .message.user .message-content {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .improvement-note {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .input-area {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: none;
+            min-height: 50px;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .send-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            height: 50px;
+        }
+        
+        .send-btn:hover {
+            background: #2563eb;
+        }
+        
+        .features {
+            background: #f0f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .features h3 {
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .features ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+        
+        .features li::before {
+            content: "✅ ";
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 복지 상담 챗봇</h1>
+        <div class="status">✨ 개선된 기능 테스트</div>
+        <p style="margin-top: 0.5rem; color: #64748b;">
+            쿼리 확장 + 대화 기억 기능이 적용된 새로운 챗봇입니다
+        </p>
+    </div>
+    
+    <div class="chat-container">
+        <div class="features">
+            <h3>🚀 개선된 기능들</h3>
+            <ul>
+                <li><strong>쿼리 확장:</strong> "다자녀가정" → "다자녀, 셋째아이, 3자녀" 등으로 자동 확장</li>
+                <li><strong>대화 기억:</strong> 이전 질문을 기억하고 자연스러운 대화 연결</li>
+                <li><strong>친근한 UI:</strong> 카카오톡 스타일의 현대적인 채팅 인터페이스</li>
+                <li><strong>세션 관리:</strong> 여러 대화를 동시에 관리</li>
+            </ul>
+        </div>
+        
+        <div class="chat-area" id="chatArea">
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    안녕하세요! 생애복지플랫폼 상담 챗봇입니다. 💬<br><br>
+                    복지 혜택, 지원 프로그램 등에 대해 궁금한 것을 질문해주세요!
+                    <div class="improvement-note">
+                        <strong>🔍 개선점 1:</strong> "다자녀가정 혜택"이라고 검색하면 이제 "다자녀", "셋째아이", "3자녀", "지원", "수당" 등의 관련 용어도 함께 검색됩니다!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <textarea id="messageInput" class="input-field" placeholder="예: 다자녀가정 혜택이 뭐가 있나요?" rows="1"></textarea>
+            <button id="sendBtn" class="send-btn">전송</button>
+        </div>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        // 테스트 데이터 (실제로는 서버에서 가져옴)
+        const testResponses = {
+            "다자녀": `다자녀 가정 지원 프로그램을 안내해드리겠습니다! 🏠
+            
+• 셋째 자녀부터 양육비 월 10만원 지원
+• 다자녀 가정 의료비 지원
+• 3자녀 이상 가정 주거 우대
+• 보육료 추가 감면
+
+<div class="improvement-note">
+<strong>🔍 쿼리 확장 적용:</strong> "다자녀가정"을 "다자녀 + 셋째아이 + 3자녀 + 지원 + 혜택"으로 확장해서 더 정확한 결과를 찾았습니다!
+</div>
+
+추가로 궁금한 것이 있으시면 언제든 물어보세요! 😊`,
+
+            "임신": `임산부 지원 프로그램을 안내해드리겠습니다! 🤰
+            
+• 임신 중 의료비 지원
+• 출산 준비금 지급  
+• 산후조리 바우처
+• 예비맘 건강검진
+
+<div class="improvement-note">
+<strong>💬 대화 기억:</strong> 이전 질문과 연관된 답변을 제공합니다. 계속해서 관련 질문을 해주세요!
+</div>`,
+
+            "출산": `출산 관련 지원을 안내해드리겠습니다! 👶
+            
+• 출산 지원금 200만원
+• 산후조리원 이용 지원
+• 신생아 건강관리
+• 육아용품 지원
+
+혹시 앞서 임신 관련 질문을 하셨나요? 연관된 정보를 더 자세히 알려드릴게요!`,
+
+            "default": `죄송합니다. 구체적인 정보를 찾을 수 없지만, 개선된 기능들이 적용되어 있습니다! 
+
+<div class="improvement-note">
+<strong>✨ 개선된 기능들:</strong><br>
+• 쿼리 확장으로 관련 용어 자동 검색<br>  
+• 대화 히스토리 기억<br>
+• 자연스러운 대화 연결<br>
+• 추가 질문 제안
+</div>
+
+다음과 같은 키워드로 다시 시도해보세요:
+• "다자녀가정 혜택"
+• "임산부 지원"  
+• "출산 지원금"`
+        };
+        
+        let conversationHistory = [];
+        
+        function addMessage(type, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = type === 'user' ? '👤' : '🤖';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = content;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+            
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            
+            // 대화 히스토리에 추가
+            conversationHistory.push({type, content});
+        }
+        
+        function getBotResponse(userMessage) {
+            // 키워드 확장 시뮬레이션
+            let expandedQuery = userMessage;
+            const keywords = {
+                '다자녀': ['셋째', '3자녀', '많은자녀'],
+                '임산부': ['임신', '예비맘', '산모'],
+                '지원': ['혜택', '보조', '급여']
+            };
+            
+            for (const [key, synonyms] of Object.entries(keywords)) {
+                if (userMessage.includes(key)) {
+                    expandedQuery += ' ' + synonyms.join(' ');
+                }
+            }
+            
+            // 응답 생성
+            for (const [keyword, response] of Object.entries(testResponses)) {
+                if (expandedQuery.includes(keyword)) {
+                    return response;
+                }
+            }
+            
+            return testResponses.default;
+        }
+        
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // 사용자 메시지 추가
+            addMessage('user', message);
+            messageInput.value = '';
+            
+            // 봇 응답 (시뮬레이션)
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage('bot', response);
+            }, 500);
+        }
+        
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // 자동 크기 조절
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+openai
+python-dotenv
+sentence-transformers==2.2.2
+faiss-cpu
+numpy
+huggingface_hub==0.23.4
+watchdog
+python-multipart
+markdown
+beautifulsoup4
+pandas
+python-docx
+openpyxl
+pyftpdlib
+mangum

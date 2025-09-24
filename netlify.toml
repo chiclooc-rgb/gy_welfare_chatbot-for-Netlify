@@ -1,0 +1,47 @@
+[build]
+  # Build command - 빌드 과정에서 의존성 설치 및 정적 파일 준비
+  command = "chmod +x build.sh && ./build.sh"
+  
+  # Publish directory - 정적 파일들이 위치할 디렉토리
+  publish = "frontend"
+  
+  # Functions directory - 서버리스 함수들이 위치할 디렉토리
+  functions = "netlify/functions"
+
+[build.environment]
+  # Python 버전 명시적 설정
+  PYTHON_VERSION = "3.10.13"
+  
+  # 환경 변수들
+  NODE_ENV = "production"
+  
+  # Python 패키지 설치 경로
+  PYTHONPATH = "/opt/buildhome/python3.10/lib/python3.10/site-packages:/var/runtime"
+
+# 서버리스 함수 설정
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# SPA(Single Page Application) 라우팅을 위한 설정
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 헤더 설정
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    
+# API 엔드포인트에 대한 CORS 설정
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, x-admin-password"

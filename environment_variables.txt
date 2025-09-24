@@ -1,0 +1,14 @@
+# Netlify 환경변수 설정 가이드
+# 실제 배포 시에는 Netlify 대시보드에서 환경변수를 설정하세요
+
+# OpenAI API 키 (필수)
+OPENAI_API_KEY=your_openai_api_key_here
+
+# 관리자 비밀번호
+ADMIN_PASSWORD=admin123
+
+# Netlify 환경 표시
+NETLIFY=true
+
+# Python 경로 설정
+PYTHONPATH=/opt/buildhome/python3.10/lib/python3.10/site-packages:/var/runtime
